@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
+# controllers handle parsing the url passed to camping and call the appropriate view
 
 module Webstrip::Controllers # handles url's
   
   # handle bare root url, eg. http://wbstrp.com/news.cnet.com
-  class Index < R '/'
+  class Index < R '', '/'
 
     def get
       @page_title = "Empty Page."
