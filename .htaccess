@@ -1,3 +1,4 @@
+# .htaccess file for webstrip project git://github.com/PeeDee/webstrip.git
 # from http://code.whytheluckystiff.net/camping/wiki/CampingOnDreamhost
 
 AddHandler fastcgi-script .fcgi
