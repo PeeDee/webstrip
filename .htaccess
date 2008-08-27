@@ -1,0 +1,12 @@
+# .htaccess file for webstrip project git://github.com/PeeDee/webstrip.git
+# from http://code.whytheluckystiff.net/camping/wiki/CampingOnDreamhost
+
+AddHandler fastcgi-script .fcgi
+Options +FollowSymLinks +ExecCGI
+
+RewriteEngine On
+
+RewriteRule ^$ index.html [QSA]
+RewriteRule ^([^.]+)$ $1.html [QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ dispatch.fcgi [QSA,L]
