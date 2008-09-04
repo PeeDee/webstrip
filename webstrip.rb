@@ -108,7 +108,7 @@ module Webstrip::Views # handles views
     r = RedCloth.new "h1=. #{hpr_doc.at("h1").inner_text}\n\n"
     links = hpr_doc.at("ul.pagination")/"li/a" # all links from first ul element
     str = links[-2].attributes['href'] # the href portion of last page(relative)
-    str =~ %r{/([-_\d]+)-(10).html$} # parse into bits, must return zero
+    str =~ %r{/([-_\d]+)-(\d+).html$} # parse into bits, must return zero
     base = $1; pages = $2.to_i
     1.upto(pages) do |i|
       url = URI('http://' + @cnet_url.host + "/" + base + "-" + i.to_s + ".html" )
