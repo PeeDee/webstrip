@@ -1,21 +1,9 @@
 #!/usr/bin/ruby
 
-## Webstrip matches various sites and then displays filtered pages.
-  # FIXME add logging for evaluation purposes...
-  # FIXME standard routine to fetch dates, build file name for page title
-
-## Things to do:
-  # @env.REQUEST_URI has the entire URI passed to controller
-  # add http:// to request uri if missing
-  # parse uri.host & replace "."s with "_"s
-  # if file named "uri_host.rb" exists, require it
-  # send output from Uri_host::html(uri) to screen
-  
 require 'rubygems'
-require 'camping'
-require 'redcloth'    # markup: http://hobix.com/textile/ 
-require 'open-uri'		# handles url's as files
-require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/hpricot/
+require 'camping'     # ruby for fcgi: http://camping.rubyforge.org/
+require 'open-uri'		# opens url's as files
+require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/doc/hpricot/
 
 Camping.goes :Webstrip # name of application
 
@@ -27,7 +15,8 @@ module Webstrip::Controllers # handles url's
   end
 
   # handle bare root url
-  # eg. http://wbstrp.net/
+  # eg. http://wbstrp.net/ or http://wbstrp.net/help
+  ## FIXME cleanup help page links to use referring host (localhost, wbstrp...) 
   class Index < R '/', '/help' 
 
     def get
