@@ -10,9 +10,9 @@ Camping.goes :Webstrip # name of application
 module Webstrip::Controllers # handles url's
   
   # will show environment, eg. http://wbstrp.net/info
-  class Info
-    def get; code @env.inspect end
-  end
+  #class Info
+  #  def get; code @env.inspect end
+  #end
 
   # handle bare root url
   # eg. http://wbstrp.net/ or http://wbstrp.net/help
@@ -66,7 +66,7 @@ module Webstrip::Views # handles views
         h3 "Host:"; p.code "host: #{@uri.host}"
         # looking for file... looking for view...
         h3 "URI:"; p.code @uri.inspect
-        h3 "Environment:"; p.code @env.inspect
+        #h3 "Environment:"; p.code @env.inspect
       }
     end
   end
