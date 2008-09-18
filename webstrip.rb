@@ -28,8 +28,9 @@ module Webstrip::Controllers # handles url's
           p "eg. http://wbstrp.net/{target page}"
           h3 "Examples:"
           ul {
-            li { a "CNET Photo Series", :href => "http://localhost:3301/news.cnet.com/2300-1041_3-6245912-1.html" }
-            li { a "Economist Special Report", :href => "http://localhost:3301/http://www.economist.com/displaystory.cfm?story_id=11751139" }
+            li { a "CNET Photo Series", :href => "http://wbstrp.net/news.cnet.com/2300-1041_3-6245912-1.html" }
+            li { a "Ars Technica", :href => "http://wbstrp.net/arstechnica.com/articles/paedia/gpu-sweeney-interview.ars" }
+            li { a "Economist Special Report (not done)", :href => "http://wbstrp.net/http://www.economist.com/displaystory.cfm?story_id=11751139" }
           }
         }
       end
