@@ -17,6 +17,7 @@ module Webstrip::Controllers # handles url's
   # handle bare root url
   # eg. http://wbstrp.net/ or http://wbstrp.net/help
   ## FIXME cleanup help page links to use referring host (localhost, wbstrp...) 
+  ## FIXME scan directory and build link list from #{stripper_domain.rb}.example
   class Index < R '/', '/help' 
 
     def get
@@ -30,6 +31,7 @@ module Webstrip::Controllers # handles url's
           ul {
             li { a "CNET Photo Series", :href => "http://wbstrp.net/news.cnet.com/2300-1041_3-6245912-1.html" }
             li { a "Ars Technica", :href => "http://wbstrp.net/arstechnica.com/articles/paedia/gpu-sweeney-interview.ars" }
+            li { a "Mauldin OTB letter", href => "http://wbstrp.net/www.investorsinsight.com/blogs/john_mauldins_outside_the_box/archive/2008/09/22/observations-on-a-crisis.aspx" }
             li { a "Economist Special Report (not done)", :href => "http://wbstrp.net/http://www.economist.com/displaystory.cfm?story_id=11751139" }
           }
         }
