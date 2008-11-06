@@ -3,12 +3,15 @@
 # eg. http://www.economist.com/displaystory.cfm?story_id=12080751
 # eg. http://www.economist.com/printedition/displayStory.cfm?Story_ID=12263158
 
+## Feature: add table of contents?
+## Feature: use economist print css?
+
 module Webstrip::Views
 
   # example of a stub - nothing right now
   def www_economist_com
     html do
-      head { title "Economist Series" }
+      head { title "Economist Series" } # put stylesheet here??
       body { 
         #h1 "Stub page."
         #h2 "Url to parse: #{@uri}"
@@ -25,10 +28,9 @@ def economist_related_items(uri)
   require 'open-uri'		# handles url's as files
   require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/hpricot/
   base_host = uri.host
-  pages = "<p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p>"
+  pages = ""            # add title of page here??
   hpr = Hpricot(open(uri))
   links = hpr.at(".related-items").at("ul")/"li/a"
-  pages << economist_clean_page(hpr) # the html from a clean page
   links.each { |link|
     uri = URI('http://' + base_host + link.attributes['href'])
     pages << "<hr><p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p>"
