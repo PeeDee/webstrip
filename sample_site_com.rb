@@ -2,15 +2,18 @@
 
 module Webstrip::Views
 
-  # example of a stub - nothing right now
-  def sample_site_com
+  # example of a stub
+  def sample_site_com # change to match url for site
+  	hpr = Hpricot(open(@uri))
+		page = (hpr.at("div#id_name")).at("div.class_name") # eg. first of class in id
     html do
-      head { title "stub" }
+      head { 
+        title "Page Title Here" 
+        style {  }
+      }
       body { 
-        h1 "Stub page."
-        h2 "Url to parse: #{@uri}"
-        p.code "host: #{@uri.host}"
-        p.code @uri.inspect
+        "<p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p><hr>" +
+        page.to_html
       }
     end
   end
