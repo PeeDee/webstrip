@@ -43,7 +43,7 @@ module Webstrip::Controllers # handles url's
   class Route < R '/\S+' 
   
     def get
-      target = @env.REQUEST_URI 
+      target = URI.unescape(@env.REQUEST_URI)
       target = ((target =~ %r{^/http://}).nil? ? "http:/" + target : target[1..-1])
       @uri = URI.parse(target) # available to views
       view = @uri.host.gsub(/\./, '_')
