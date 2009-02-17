@@ -17,7 +17,7 @@ module Webstrip::Views
     require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/hpricot/
     hpr_doc = Hpricot(open(uri))
     pages = "<p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p>"
-    pages = "<h1> #{hpr_doc.at("h1").inner_text}</h1>\n\n"
+    pages << "<h1> #{hpr_doc.at("h1").inner_text}</h1>\n\n"
     links = hpr_doc.at("ul.pagination")/"li/a" # all links from first ul element
     str = links[-2].attributes['href'] # the href portion of last page(relative)
     str =~ %r{/([-_\d]+)-(\d+).html$} # parse into bits, must return zero
