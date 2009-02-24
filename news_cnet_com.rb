@@ -18,7 +18,7 @@ module Webstrip::Views
     hpr_doc = Hpricot(open(uri))
     pages = "<p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p>"
     pages << "<h1> #{hpr_doc.at("h1").inner_text}</h1>\n\n"
-    links = hpr_doc.at("ul#thumbHousing")/"li/a" # all links from first ul element
+    links = hpr_doc.at("ul.pagination")/"li/a" # all links from first ul element
     str = links[-2].attributes['href'] # the href portion of last page(relative)
     str =~ %r{/([-_\d]+)-(\d+).html$} # parse into bits, must return zero
     base = $1; num_pages = $2.to_i
