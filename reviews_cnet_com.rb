@@ -25,6 +25,7 @@ module Webstrip::Views
       pages << "<p><code>Error parsing final link: #{str}</code></p>"
       return pages
     end # parse into bits, must return zero
+
     base = $1; num_pages = $2.to_i  #; num_pages = 25 # Apache seems to time out, return 404
     1.upto(num_pages) do |i|
       url = URI('http://' + uri.host + "/" + base + "-" + i.to_s + ".html" )
