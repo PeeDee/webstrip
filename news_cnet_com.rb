@@ -32,7 +32,11 @@ module Webstrip::Views
       url = URI('http://' + uri.host + "/" + base + "-" + i.to_s + ".html" )
        hpr_doc = Hpricot(open(url)) # repeats first page, but cached...
        pages << '<div style="page-break-after: always">' + "\n\n"
-       pages << "<h4>#{hpr_doc.at('#contentAux').at('strong').inner_text}</h4>\n\n"
+       # heading doesn't always exist
+       if (sub_head = hpr_doc.at('#contentAux').at('strong')) 
+        pages << "<h4>#{sub_head.inner_text}</h4>\n\n"
+       end
+       #pages << "<h4>#{hpr_doc.at('#contentAux').at('strong').inner_text}</h4>\n\n"
        pages << "#{hpr_doc.at('#contentAux').at('.caption').to_html}\n\n"
        pages << '<div align="center">' + "\n\n"
        pages << (hpr_doc.at("#galleryimage")).to_html + "\n\n" # alt attribute may be better title
