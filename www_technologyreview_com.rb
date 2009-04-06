@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # created to parse the Technology Review series
+# mistakenly deleted this on local branch; don't know how to restore
 
 module Webstrip::Views
 
