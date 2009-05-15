@@ -27,7 +27,7 @@ module Webstrip::Views
       return pages
     end # parse into bits, must return zero
 
-    base = m[1], num_pages = m[2].to_i
+    base = m[1].to_s; num_pages = m[2].to_i
     1.upto(num_pages) do |i|
       url = URI('http://' + uri.host + "/" + base + "-" + i.to_s + ".html" )
        hpr_doc = Hpricot(open(url)) # repeats first page, but cached...
