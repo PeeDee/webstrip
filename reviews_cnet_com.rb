@@ -19,14 +19,14 @@ module Webstrip::Views
     pages <<  " at #{hpr_doc.at('#contentAux').at('.dateStamp').to_html}</p>\n\n"
     pages << "<h1> #{hpr_doc.at("h1").inner_text}</h1>\n\n"
 
-    links = hpr_doc.at("#contentBody").at(".pagination")/"li/a" # all links from first ul element
+    links = hpr_doc.at("div#contentBody").at("ul.pagination")/"li/a" # all links from first ul element
     str = links[-2].attributes['href'] # the href portion of last page(relative)
-    unless (str =~ %r{/([-_\d]+)-(\d+).html}) == 0
+    unless (m = str.match(/([-_\d]+)-(\d+).html/))
       pages << "<p><code>Error parsing final link: #{str}</code></p>"
       return pages
-    end # parse into bits, must return zero
+    end # parse into bits, nil if fails?
+    base = m[1].to_s; num_pages = m[2].to_i
 
-    base = $1; num_pages = $2.to_i  #; num_pages = 25 # Apache seems to time out, return 404
     1.upto(num_pages) do |i|
       url = URI('http://' + uri.host + "/" + base + "-" + i.to_s + ".html" )
        hpr_doc = Hpricot(open(url)) # repeats first page, but cached...

@@ -23,11 +23,11 @@ module Webstrip::Views
     links = hpr_doc.at("div#contentBody").at("ul.pagination")/"li/a" # all links from first ul element
     str = links[-2].attributes['href'] # the href portion of last page(relative)
     unless (m = str.match(/([-_\d]+)-(\d+).html/))
-      pages << "<p><code>Ne Error parsing final link: #{str}</code></p>"
+      pages << "<p><code>Error parsing final link: #{str}</code></p>"
       return pages
-    end # parse into bits, must return zero
-
+    end # parse into bits, nil if fails?
     base = m[1].to_s; num_pages = m[2].to_i
+
     1.upto(num_pages) do |i|
       url = URI('http://' + uri.host + "/" + base + "-" + i.to_s + ".html" )
        hpr_doc = Hpricot(open(url)) # repeats first page, but cached...
