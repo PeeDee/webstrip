@@ -24,21 +24,24 @@ end
 def ars_pages(uri)
   require 'open-uri'		# handles url's as files
   require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/hpricot/
+  
   page_number = 1
   pages = "<p>wbstrp'd from: <a href='#{uri}'>#{uri}</a></p>"
+  #puts "First page: #{uri}"
+  hpr = Hpricot(open(uri))
+  pages << hpr.at("#news-item-info").to_html
+  #puts pages
   begin
-    hpr = Hpricot(open(uri))
-    page = hpr.at("div#news-item")  # just the contents of this div
+    last_link = (hpr.at("#pager")/"li").last # normally "Next >"
+    link = last_link.at("a") # nil if this is last page
+    page = hpr.at("div#news-item")    # just the contents of this div
     (page/"div.Options").remove       # remove stuff about getting pdf
-    unless page_number == 1 then      # remove heading & byline from all but first page
-      #(page/"h1").remove
-      #Hpricot::Elements[(page.at("p"))].remove # first para; "p.Tag Full" won't match
-    end
+    (page/"#pager").remove            # the followon links
     pages << "\r\n\r\n<!-- page number #{page_number} -->\r\n\r\n"
     pages << page.to_html
-    link = (hpr.at("#pager")/"a")[-1]
-    uri = link[:href]
-    page_number += 1
-  end until (link[:class] == "Inactive")
+    hpr = Hpricot(open(link[:href])) unless link.nil?
+    page_number += 1 #; puts "Page number: #{page_number}"
+  end until link.nil?
+  
   pages
 end
