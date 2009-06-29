@@ -28,15 +28,15 @@ def ars_pages(uri)
   pages = "<p>wbstrp'd from: <a href='#{uri}'>#{uri}</a></p>"
   begin
     hpr = Hpricot(open(uri))
-    page = hpr.at("div.ContentBody")  # just the contents of this div
+    page = hpr.at("div#news-item")  # just the contents of this div
     (page/"div.Options").remove       # remove stuff about getting pdf
     unless page_number == 1 then      # remove heading & byline from all but first page
-      (page/"h1").remove
-      Hpricot::Elements[(page.at("p"))].remove # first para; "p.Tag Full" won't match
+      #(page/"h1").remove
+      #Hpricot::Elements[(page.at("p"))].remove # first para; "p.Tag Full" won't match
     end
     pages << "\r\n\r\n<!-- page number #{page_number} -->\r\n\r\n"
     pages << page.to_html
-    link = (hpr.at("p.Paging")/"a")[-1]
+    link = (hpr.at("#pager")/"a")[-1]
     uri = link[:href]
     page_number += 1
   end until (link[:class] == "Inactive")

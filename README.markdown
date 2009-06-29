@@ -23,3 +23,14 @@ view for the html to render.
 Works great.
 
 Next step is to go back to the single file plan and see if that makes it work again.
+
+Git Update
+<pre>
+> cat README.markdown 
+> git status
+> git commit -a -m "Message here."
+> git push origin master
+> ssh <online>
+> git pull origin master
+> touch dispatch.fcgi
+</pre>
