@@ -33,27 +33,27 @@ Hpricot document parsed from the url.
 
 Class Hierarchy
 ---------------
-  PageRouter - implements basic response to rack call(), routes page
-  WebStrip - class with generic routines, must override clean_page
-    |-- LinkedPageSeries - handles articles with a link block
-    | '-- www_..._com - your sub-classes here
-    |-- ChainedPageSeries - handles articles with a "next" link
-    | '-- www_..._com - your sub-classes here
-    '-- www_..._com - your sub-classes here
+    PageRouter - implements basic response to rack call(), routes page
+    WebStrip - class with generic routines, must override clean_page
+      |-- LinkedPageSeries - handles articles with a link block
+      | '-- www_..._com - your sub-classes here
+      |-- ChainedPageSeries - handles articles with a "next" link
+      | '-- www_..._com - your sub-classes here
+      '-- www_..._com - your sub-classes here
 
 File Layout
 -----------
-  webstrip
-    |-- README.markdown
-    |-- config.ru
-    |-- page_router.rb
-    |-- public
-    |   |-- favicon.gif
-    |   `-- favicon.ico
-    |-- sites
-    |   `-- www_..._com.rb
-    |-- tmp
-    |   `-- restart.txt
-    `-- webstrip.rb
+    webstrip
+      |-- README.markdown
+      |-- config.ru
+      |-- page_router.rb
+      |-- public
+      |   |-- favicon.gif
+      |   `-- favicon.ico
+      |-- sites
+      |   `-- www_..._com.rb
+      |-- tmp
+      |   `-- restart.txt
+      `-- webstrip.rb
 
 
