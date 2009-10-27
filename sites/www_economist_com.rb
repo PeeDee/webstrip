@@ -6,58 +6,41 @@
 ## Feature: add table of contents?
 ## Feature: use economist print css?
 
-module Webstrip::Views
+require File.dirname(__FILE__) + "/../web_strip.rb"
 
-  # example of a stub - nothing right now
-  def www_economist_com
-    html do
-      head { 
-        title "Economist Series\n"
-        style { "
-          body { margin: 20px 20px 20px 20px;	}
-          .content-image-full, .content-image-float { align: center; margin: 20px 20px; } 
-          p.fly-title { color: red }
-        \n\n" }
+class Www_economist_com < LinkedPageSeries
 
-        # css sheet results in crappy borders
-        #tag!(:link, "rel" => "stylesheet", "type" => "text/css", "href" => "http://media.economist.com/css/6.1.2/global_story.css")
-        } 
-      body { 
-        #h1 "Stub page."; h2 "Url to parse: #{@uri}"; p.code @uri.inspect
-        economist_related_items(@uri)
-      }
-    end
+  def initialize(uri, page_router)
+    super
+    @title_string = title_from(@doc)
+    @logger.write "Www_economist_com: Setting title to '#{@title_string}'\n"
   end
-  
-end
 
-def economist_related_items(uri)
-  require 'open-uri'		# handles url's as files
-  require 'hpricot' 		# html parsing: http://code.whytheluckystiff.net/hpricot/
-  base_host = uri.host
-  pages = ""            # add title of page here??
-  hpr = Hpricot(open(uri))#; hpr.nil?
-  links = (hpr/"#content div div.col-right div.related-items ul li a") # css tree
-  links.each { |link|
-    uri = URI(link.attributes['href']) # removed the base
-    pages << "<hr><p>wbstrp'd from: <code><a href='#{uri}'>#{uri}</a></code></p>\n\n"
-    hpr = Hpricot(open(uri))
-    pages << economist_clean_page(hpr) # the html from a clean page
-  }
-  pages
-end
+  def title_from(doc)
+    title = (doc/"div#content div.col-left p.fly-title").inner_text
+    info = (doc/"div#content div.col-left p.info").inner_text # => "Oct 22nd 2009From..."
+    d = ((/^(.+)From/ =~ info) == 0 ? Date.parse($1) : Date.today)
+    "#{d.strftime("%y%m%d")} #{title}"
+  end
 
-def economist_clean_page(doc)
-  page = (doc/"#content .col-left")
-  (page/"script").remove # remove all scripts
-  (page/".banner").remove # remove all banner ads
-  (page/".article-section").remove # remove all banner ads
-  (page/".back-to-top").remove
-  (page/"div#add-comment-container").remove
-  
-  ##FIXME have to fix relative img references
-  #<img width="325" height="238" title="" alt=" " src="/images/20071110/4507SR10.jpg"/>
-  ## seems to have changed lately...
-  #(page/"img").each { |i| i[:src] = 'http://' + base_url.host + i[:src] }
-	page.to_html
-end
+  # returns array of href's to related articles
+  def link_list
+    links = @doc.at("div.related-items ul")/"li a" # get the right block of links
+    links = links[0..-2] # drop the last element, Offer to Readers (sloppy)
+    hrefs = links.collect { |l| l.attributes['href'] }    # return list of href attributes
+    #hrefs.each { |h| h.sub!("displaystory.cfm", "PrinterFriendly.cfm") } # convert to print pages
+    hrefs # return
+  end
+
+  # the contents we are actually interested in
+  def clean_page(doc)
+    page = (doc/"div#content div.col-left")
+    (page/"script").remove           # remove all scripts
+    (page/".article-section").remove # header for special reports
+    (page/".banner").remove          # remove all banner ads
+    (page/".back-to-top").remove     # next article link
+    (page/"div#add-comment-container").remove # box for adding comments
+    page.to_html
+  end
+
+end # Www_economist_com
