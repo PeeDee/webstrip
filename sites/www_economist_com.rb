@@ -25,7 +25,12 @@ class Www_economist_com < LinkedPageSeries
 
   # returns array of href's to related articles
   def link_list
-    links = @doc.at("div.related-items ul")/"li a" # get the right block of links
+    if (links = @doc.at("div.related-items ul")).nil?
+      @logger.write "Www_economist_com: Could not fetch links.\n"
+      return [@uri.to_s]
+    else
+      links = links/"li a" # get the right block of links
+    end
     links = links[0..-2] # drop the last element, Offer to Readers (sloppy)
     hrefs = links.collect { |l| l.attributes['href'] }    # return list of href attributes
     #hrefs.each { |h| h.sub!("displaystory.cfm", "PrinterFriendly.cfm") } # convert to print pages

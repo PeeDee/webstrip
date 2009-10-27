@@ -7,6 +7,9 @@ require 'rubygems'
 require 'open-uri'		# parses url's, opens url's as files
 require 'markaby'     # for composing web pages
 
+require File.dirname(__FILE__) + "/web_strip.rb" # so sub-classes don't have to
+
+
 # handles call() method sent from Rack and instantiates appropriate page_handler
 # see http://rack.rubyforge.org/doc/
 class PageRouter
@@ -68,7 +71,7 @@ class PageRouter
                   "  by page handler '#{page_handler}'.\n" +
                   "  Error Message: #{err.message}\n"
             @logger.write "#{msg}\n"
-            raise err.class, msg
+            raise err.class, msg, caller
         end
       else
         msg = "PageRouter: URI::class '#{@uri.class}' not handled."
