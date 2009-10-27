@@ -55,8 +55,8 @@ class PageRouter
         PageRouter.welcome_page # put up a simple page
       when @uri.class == URI::HTTP
         page_handler = @uri.host.gsub(/\./, '_').capitalize! # convert to class name
-        begin
-          require File.dirname(__FILE__) + "/sites/#{page_handler}.rb" # WebStrip sub-class
+        begin # load appropriate WebStrip sub-class source file
+          require File.dirname(__FILE__) + "/sites/#{page_handler.downcase}.rb"
           rescue LoadError => err
             msg = "PageRouter: Unable to load page handler for #{page_handler}\n" +
                   "  URI: #{@uri}\n" +
@@ -64,7 +64,7 @@ class PageRouter
             @logger.write "#{msg}\n"
             raise LoadError, msg, caller
         end
-        begin
+        begin # instantiate sub-class with context
           eval "#{page_handler}.new(@uri, self).filtered_page" # send to WebStrip sub-class
           rescue Exception => err
             msg = "PageRouter: Failure in handling '#{@uri}'\n" +
