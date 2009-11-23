@@ -10,7 +10,7 @@ require File.dirname(__FILE__) + "/../web_strip.rb"
 
 class Www_economist_com < LinkedPageSeries
 
-  def initialize(uri, page_router)
+  def initialize(page_router)
     super
     @title_string = title_from(@doc)
     @logger.write "Www_economist_com: Setting title to '#{@title_string}'\n"
@@ -31,9 +31,10 @@ class Www_economist_com < LinkedPageSeries
     else
       links = links/"li a" # get the right block of links
     end
-    links = links[0..-2] # drop the last element, Offer to Readers (sloppy)
+    #FIXME SP's want last item in links (Offer to Readers) dropped?
+    #links = links[0..-2] # drop the last element, Offer to Readers (sloppy)
     hrefs = links.collect { |l| l.attributes['href'] }    # return list of href attributes
-    #hrefs.each { |h| h.sub!("displaystory.cfm", "PrinterFriendly.cfm") } # convert to print pages
+    hrefs.insert (0, @uri.to_s) unless (hrefs.first == @uri.to_s)
     hrefs # return
   end
 
